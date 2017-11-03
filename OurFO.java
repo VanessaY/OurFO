@@ -99,7 +99,7 @@ public class OurFO {
 				}
 
 				//planet location (integer)
-                String location = "";
+                Integer location = "";
                 while (location.equals("")){
                     System.out.print("Planet location: ");
                     location = Integer.parseInt(sc.nextLine());
