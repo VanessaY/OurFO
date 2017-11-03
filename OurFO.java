@@ -97,16 +97,6 @@ public class OurFO {
 					System.out.print("Planet name: ");
 					name = sc.nextLine();
 				}
-                String name = "";
-                while (name.equals("")){
-                    System.out.print("Planet name: ");
-                    name = sc.nextLine();
-                }
-                String name = "";
-                while (name.equals("")){
-                    System.out.print("Planet name: ");
-                    name = sc.nextLine();
-                }
 
 				try {
 					Statement s = c.createStatement();
