@@ -3,6 +3,8 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.Scanner;
 
 public class OurFO {
@@ -263,6 +265,51 @@ public class OurFO {
 	}
 
 	private void superDisplay(Connection c){
+
+        System.out.println("What would you like to display?");
+        System.out.println("1: Planet");
+        System.out.println("2: Ship");
+        System.out.println("3: Ship compatibility");
+        System.out.println("4: Ship models");
+        System.out.println("5: Species");
+        System.out.println("6: User");
+        System.out.println("7: Go back");
+
+        Scanner sc = new Scanner(System.in);
+        String option = sc.nextLine();
+
+        switch(option) {
+            case "1": //planet
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT id, name FROM planet";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ID Name");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+        }
 	}
 
 	/*
