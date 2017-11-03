@@ -51,7 +51,9 @@ public class OurFO {
 
 
 	private void superUserOptions(Connection c){
-		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser. What would you like to do?");
+		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser." +
+						   "In addition, there will not be constraint checking in this version. " +
+						   "What would you like to do?");
 		System.out.println("1: Add something to the database");
 		System.out.println("2: Display something from the database");
 		System.out.println("3: Act as a user");
@@ -85,12 +87,13 @@ public class OurFO {
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
 		System.out.println("6: User");
+		System.out.println("7: Go back");
 
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
 
 		switch(option){
-			case "1":
+			case "1": //planet
 			    //planet name (varchar(20))
 				String name = "";
 				while (name.equals("")){
@@ -99,22 +102,17 @@ public class OurFO {
 				}
 
 				//planet location (integer)
-                Integer location = "";
-                while (location.equals("")){
+                Integer location = -1;
+                while (location <= 0){
                     System.out.print("Planet location: ");
                     location = Integer.parseInt(sc.nextLine());
                 }
 
-                //planet stations (integer)
-                Integer stations = -1;
-                while (stations.equals(-1)){
-                    System.out.print("Planet number of stations: ");
-                    stations = Integer.parseInt(sc.nextLine());
-                }
-
 				try {
 					Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO planet (name, location, stations) VALUES (\'%s\', \'%s\', \'%d\')", name, location, stations);
+					String stmt = String.format("INSERT INTO planet (name, location) " + 
+												"VALUES (\'%s\', \'%s\')", 
+												name, location);
 					System.out.println(stmt);
 
 					PreparedStatement p = c.prepareStatement(stmt);
@@ -124,31 +122,24 @@ public class OurFO {
 				}
 
 				break;
-			case "2":
-			    //ship id (integer)
-				Integer s_id = -1;
-				while (s_id.equals(-1)){
-					System.out.print("Ship id: ");
-					s_id = Integer.parseInt(sc.nextLine());
-				}
-
-				//ship model (varchar(20))
-                String s_model = "";
-                while (s_model.equals("")){
-                    System.out.print("Ship Model: ");
-                    s_model = sc.nextLine();
+			case "2": //ship
+				//ship model (int)
+                int s_model_id = -1;
+                while (s_model_id <= 0){
+                    System.out.print("Ship Model ID: ");
+                    s_model_id = Integer.parseInt(sc.nextLine());
                 }
 
                 //ship dockedat (integer)
                 Integer dockedat = -1;
-                while (dockedat.equals("")){
+                while (dockedat <= 0){
                     System.out.print("Ship dockedat (integer): ");
                     dockedat = Integer.parseInt(sc.nextLine());
                 }
 
 				try {
 					Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO ship (id, model, dockedat) VALUES (\'%d\', \'%s\', \'%d\')", s_id, s_model, dockedat);
+					String stmt = String.format("INSERT INTO ship (model, dockedat) VALUES (\'%s\', \'%d\')", s_model_id, dockedat);
 					System.out.println(stmt);
 
 					PreparedStatement p = c.prepareStatement(stmt);
@@ -157,24 +148,24 @@ public class OurFO {
 					System.out.println(e);
 				}
 				break;
-			case "3":
+			case "3": //ship compatibility
                 //ship_compatibility ship_id (integer)
-                Integer ship_id = -1;
-                while (ship_id.equals("")){
+                Integer ship_model_id = -1;
+                while (ship_model_id <= 0 ){
                     System.out.print("Ship id: ");
-                    ship_id = Integer.parseInt(sc.nextLine());
+                    ship_model_id = Integer.parseInt(sc.nextLine());
                 }
 
                 //ship_compatibility species_id (integer)
                 Integer species_id = -1;
-                while (species_id.equals("")){
+                while (species_id <= 0){
                     System.out.print("Species id: ");
                     species_id = Integer.parseInt(sc.nextLine());
                 }
 
                 try {
                     Statement s = c.createStatement();
-                    String stmt = String.format("INSERT INTO ship (ship_id, species_id) VALUES (\'%d\', \'%d\')", ship_id, species_id);
+                    String stmt = String.format("INSERT INTO ship (ship_id, species_id) VALUES (\'%d\', \'%d\')", ship_model_id, species_id);
                     System.out.println(stmt);
 
                     PreparedStatement p = c.prepareStatement(stmt);
@@ -183,7 +174,7 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "4":
+			case "4": //ship model
                 //ship_models name (varchar(20))
                 String sm_name = "";
                 while (sm_name.equals("")){
@@ -193,7 +184,7 @@ public class OurFO {
 
                 try {
                     Statement s = c.createStatement();
-                    String stmt = String.format("INSERT INTO ship_models (name) VALUES (\'%s\')", sm_name);
+                    String stmt = String.format("INSERT INTO ship_models (name) VALUES (\'%s\', \'%d\')", sm_name);
                     System.out.println(stmt);
 
                     PreparedStatement p = c.prepareStatement(stmt);
@@ -202,15 +193,70 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "5":
+			case "5": //Species
+			    //species name (varchar(20))
+                String s_name = "";
+                while (s_name.equals("")){
+                    System.out.print("Species name: ");
+                    s_name = sc.nextLine();
+                }
+
+				//Species homeworld (varchar(20))
+				String world = "";
+				while (world.equals("")){
+					System.out.println("Species homeworld: ");
+					world = sc.nextLine();
+				}
+
+                try {
+                    Statement s = c.createStatement();
+					String stmt = String.format("INSERT INTO species (name, homeworld) " + 
+												"VALUES (\'%s\', \'%s\')", 
+												s_name, world);
+                    System.out.println(stmt);
+
+                    PreparedStatement p = c.prepareStatement(stmt);
+                    p.executeUpdate();
+                } catch (SQLException e){
+                    System.out.println(e);
+                }
 				break;
-			case "6":
+			case "6": //User
+			    //username (varchar(20))
+                String u_name = "";
+                while (u_name.equals("")){
+                    System.out.print("Ship Model name: ");
+                    name = sc.nextLine();
+                }
+
+				//Species_id (int)
+				int u_id = -1;
+				while (u_id <= 0){
+					System.out.print("Ship Model ID: ");
+					u_id = Integer.parseInt(sc.nextLine());
+				}
+
+                try {
+                    Statement s = c.createStatement();
+					String stmt = String.format("INSERT INTO ship_models (name, species_id) " + 
+												"VALUES (\'%s\', \'%d\')", 
+												u_name, u_id);
+                    System.out.println(stmt);
+
+                    PreparedStatement p = c.prepareStatement(stmt);
+                    p.executeUpdate();
+                } catch (SQLException e){
+                    System.out.println(e);
+                }
+				break;
+			case "7":
+				superUserOptions(c);
 				break;
 			default:
-				superAdd(c);
 				break;
 		}
 
+		superAdd(c);
 
 	}
 
