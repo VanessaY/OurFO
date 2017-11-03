@@ -56,7 +56,7 @@ public class OurFO {
 						   "What would you like to do?");
 		System.out.println("1: Add something to the database");
 		System.out.println("2: Display something from the database");
-		System.out.println("3: Act as a user");
+		//System.out.println("3: Act as a user");
 
 		System.out.print("\n>>");
 		
@@ -70,9 +70,11 @@ public class OurFO {
 			case "2":
 				superDisplay(c);
 				break;
+			/*
 			case "3":
 				actAsUser(c);
 				break;
+			*/
 			default:
 				superUserOptions(c);
 				break;
@@ -262,7 +264,10 @@ public class OurFO {
 
 	private void superDisplay(Connection c){
 	}
+
+	/*
 	private void actAsUser(Connection c){
 	}
+	*/
 }
 
