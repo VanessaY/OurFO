@@ -29,6 +29,7 @@ public class OurFO {
         if (password.equals("")){
 			password = "changeTHISplease";
 		}
+		System.out.println("Connecting to Postgres Server...");
 		Connection connection= null;
 		try {
 			connection = DriverManager.getConnection(
@@ -78,13 +79,14 @@ public class OurFO {
 	}
 
 	private void superAdd(Connection c){
-		System.out.println("What would you like to add?");
-		System.out.println("1: Planet");
-		System.out.println("2: Ship");
-		System.out.println("3: Ship compatibility");
-		System.out.println("4: Ship models");
-		System.out.println("5: Species");
-		System.out.println("6: User");
+		System.out.println("What would you like to do?");
+		System.out.println("1: Add planet");
+		System.out.println("2: Add ship");
+		System.out.println("3: Add ship compatibility");
+		System.out.println("4: Add ship models");
+		System.out.println("5: Add species");
+		System.out.println("6: Add user");
+		System.out.println("7: Go back");
 		
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -119,16 +121,22 @@ public class OurFO {
 				break;
 			case "6":
 				break;
+			case "7":
+				superUserOptions(c);
+				break:
 			default:
-				superAdd(c);
 				break;
 		}
+		superAdd(c);
 
 	}
 
 	private void superDisplay(Connection c){
+		System.out.println("What table would you like to display?");
 	}
 	private void actAsUser(Connection c){
+		System.out.println("Hello! This section is currently under progress, so there isn't much to do here.")
+		superUserOptions(c);
 	}
 }
 
