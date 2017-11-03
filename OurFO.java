@@ -85,7 +85,8 @@ public class OurFO {
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
 		System.out.println("6: User");
-		
+		System.out.println("7: Exit");
+
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
 
@@ -96,7 +97,17 @@ public class OurFO {
 					System.out.print("Planet name: ");
 					name = sc.nextLine();
 				}
-				
+                String name = "";
+                while (name.equals("")){
+                    System.out.print("Planet name: ");
+                    name = sc.nextLine();
+                }
+                String name = "";
+                while (name.equals("")){
+                    System.out.print("Planet name: ");
+                    name = sc.nextLine();
+                }
+
 				try {
 					Statement s = c.createStatement();
 					String stmt = String.format("INSERT INTO planet (name) VALUES (\'%s\')", name);
@@ -110,19 +121,70 @@ public class OurFO {
 
 				break;
 			case "2":
+			    //ship id (integer)
+				Integer s_id = -1;
+				while (s_id.equals(-1)){
+					System.out.print("Ship id: ");
+					s_id = Integer.parseInt(sc.nextLine());
+				}
+
+				//ship model (varchar(20))
+                String s_model = "";
+                while (s_model.equals("")){
+                    System.out.print("Ship Model: ");
+                    s_model = sc.nextLine();
+                }
+
+				try {
+					Statement s = c.createStatement();
+					String stmt = String.format("INSERT INTO ship (id, model) VALUES (\'%d\', \'%s\')", s_id, s_model);
+					System.out.println(stmt);
+
+					PreparedStatement p = c.prepareStatement(stmt);
+					p.executeUpdate();
+				} catch (SQLException e){
+					System.out.println(e);
+				}
 				break;
 			case "3":
 				break;
 			case "4":
+			    //ship_models id (integer)
+                Integer sm_id = -1;
+                while (sm_id.equals(-1)){
+                    System.out.print("Ship Model id: ");
+                    sm_id = Integer.parseInt(sc.nextLine());
+                }
+
+                //ship_models name (varchar(20))
+                String sm_name = "";
+                while (sm_name.equals("")){
+                    System.out.print("Ship Model name: ");
+                    sm_name = sc.nextLine();
+                }
+
+                try {
+                    Statement s = c.createStatement();
+                    String stmt = String.format("INSERT INTO ship_models (name, id) VALUES (\'%s\', \'%d\')", sm_name, sm_id);
+                    System.out.println(stmt);
+
+                    PreparedStatement p = c.prepareStatement(stmt);
+                    p.executeUpdate();
+                } catch (SQLException e){
+                    System.out.println(e);
+                }
 				break;
 			case "5":
 				break;
 			case "6":
 				break;
+            case "7":
+                break;
 			default:
 				superAdd(c);
 				break;
 		}
+
 
 	}
 
