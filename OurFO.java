@@ -1,7 +1,6 @@
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import java.util.Scanner;
 
 public class OurFO {
@@ -17,22 +16,21 @@ public class OurFO {
 		}
 
         Scanner sc = new Scanner(System.in);
-        System.out.print("Postgres Username (Blank for \"postgres\":");
-        String username = sc.nextLine();
-        if (username.equals("")){
-            username = "postgres";
-        }
-        System.out.print("Postgres Username (Blank for \"CSCI320\":");
+        System.out.print("Postgres Username: ");
+		String username = sc.nextLine();
+		if (username.equals("")){
+			username = "p32003a";
+		}
+        
+        System.out.print("Postgres Password: ");
         String password = sc.nextLine();
         if (password.equals("")){
-            password = "CSCI320";
-        }
-
-
+			password = "changeTHISplease";
+		}
 		Connection connection= null;
 		try {
 			connection = DriverManager.getConnection(
-					"jdbc:postgresql://127.0.0.1:5432/ourfo", username,
+					"jdbc:postgresql://reddwarf.cs.rit.edu:5432/p32003a", username,
 					password);
 		} catch (SQLException e) {
 			System.out.println("Connection Failed! Check output console");
@@ -44,10 +42,22 @@ public class OurFO {
             System.out.println("Failed to make connection!");
             System.exit(0);
         }
-        
+	 
+		OurFO ourfo = new OurFO();
+		ourfo.superUserOptions();
+	}		
 
 
+	private void superUserOptions(){
+		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser. What would you like to do?");
+		System.out.println("A: Add something to the database");
+		System.out.println("D: Display something from the database");
+		System.out.println("U: Act as a user");
 
+		System.out.print("\n>>");
+		
+		Scanner sc = new Scanner(System.in);
+		String option = sc.nextLine();
 	}
-
 }
+
