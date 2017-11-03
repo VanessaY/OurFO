@@ -85,7 +85,6 @@ public class OurFO {
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
 		System.out.println("6: User");
-		System.out.println("7: Exit");
 
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -185,13 +184,6 @@ public class OurFO {
                 }
 				break;
 			case "4":
-			    //ship_models id (integer)
-                Integer sm_id = -1;
-                while (sm_id.equals(-1)){
-                    System.out.print("Ship Model id: ");
-                    sm_id = Integer.parseInt(sc.nextLine());
-                }
-
                 //ship_models name (varchar(20))
                 String sm_name = "";
                 while (sm_name.equals("")){
@@ -201,7 +193,7 @@ public class OurFO {
 
                 try {
                     Statement s = c.createStatement();
-                    String stmt = String.format("INSERT INTO ship_models (name, id) VALUES (\'%s\', \'%d\')", sm_name, sm_id);
+                    String stmt = String.format("INSERT INTO ship_models (name) VALUES (\'%s\')", sm_name);
                     System.out.println(stmt);
 
                     PreparedStatement p = c.prepareStatement(stmt);
