@@ -3,6 +3,8 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.Scanner;
 
 public class OurFO {
@@ -261,7 +263,73 @@ public class OurFO {
 	}
 
 	private void superDisplay(Connection c){
+		System.out.println("What would you like to display?");
+		System.out.println("1: Planets");
+		System.out.println("2: Ships");
+		System.out.println("3: Ship compatibilities");
+		System.out.println("4: Ship models");
+		System.out.println("5: Species");
+		System.out.println("6: Users");
+		System.out.println("7: Exit");
+
+		Scanner sc = new Scanner(System.in);
+		String option = sc.nextLine();
+
+		switch(option){
+			case "1": //planet
+
+				try {
+					Statement st = c.createStatement();
+					String query = "SELECT id, name FROM planet";
+					ResultSet rs = st.executeQuery(query);
+					ResultSetMetaData rsmd = rs.getMetaData();
+
+					int columnsNumber = rsmd.getColumnCount();
+
+					// Iterate through the data in the result set and display it.
+
+					System.out.println("ID Name");
+					while (rs.next()) {
+						//Print one row
+						for(int i = 1 ; i <= columnsNumber; i++){
+
+							System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+						}
+
+						System.out.println();//Move to the next line to print the next row.
+
+					}
+				} catch (SQLException e){
+					System.out.println(e);
+				}
+
+			case "2": // ships
+				break;
+
+			case "3": // ship compatabilities
+				break;
+			case "4": // ship models
+				break;
+			case "5": // ship species
+				break;
+			case "6": // ship users
+				break;
+
+			case "7":
+				superUserOptions(c);
+				break;
+			default:
+				break;
+		}
+
+		superAdd(c);
+
+
+
 	}
+
+
 	private void actAsUser(Connection c){
 	}
 }
