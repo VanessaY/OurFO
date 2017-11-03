@@ -1,6 +1,8 @@
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class OurFO {
@@ -44,20 +46,89 @@ public class OurFO {
         }
 	 
 		OurFO ourfo = new OurFO();
-		ourfo.superUserOptions();
+		ourfo.superUserOptions(connection);
 	}		
 
 
-	private void superUserOptions(){
+	private void superUserOptions(Connection c){
 		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser. What would you like to do?");
-		System.out.println("A: Add something to the database");
-		System.out.println("D: Display something from the database");
-		System.out.println("U: Act as a user");
+		System.out.println("1: Add something to the database");
+		System.out.println("2: Display something from the database");
+		System.out.println("3: Act as a user");
 
 		System.out.print("\n>>");
 		
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
+
+		switch(option){
+			case "1":
+				superAdd(c);
+				break;
+			case "2":
+				superDisplay(c);
+				break;
+			case "3":
+				actAsUser(c);
+				break;
+			default:
+				superUserOptions(c);
+				break;
+		}
+	}
+
+	private void superAdd(Connection c){
+		System.out.println("What would you like to add?");
+		System.out.println("1: Planet");
+		System.out.println("2: Ship");
+		System.out.println("3: Ship compatibility");
+		System.out.println("4: Ship models");
+		System.out.println("5: Species");
+		System.out.println("6: User");
+		
+		Scanner sc = new Scanner(System.in);
+		String option = sc.nextLine();
+
+		switch(option){
+			case "1":
+				String name = "";
+				while (name.equals("")){
+					System.out.print("Planet name: ");
+					name = sc.nextLine();
+				}
+				
+				try {
+					Statement s = c.createStatement();
+					String stmt = String.format("INSERT INTO planet (name) VALUES (\'%s\')", name);
+					System.out.println(stmt);
+
+					PreparedStatement p = c.prepareStatement(stmt);
+					p.executeUpdate();
+				} catch (SQLException e){
+					System.out.println(e);
+				}
+
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			default:
+				superAdd(c);
+				break;
+		}
+
+	}
+
+	private void superDisplay(Connection c){
+	}
+	private void actAsUser(Connection c){
 	}
 }
 
