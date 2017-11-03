@@ -309,6 +309,172 @@ public class OurFO {
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
+
+            case "2": // ships
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT id, model FROM ship";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ID Model-ID");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+
+            case "3" : // ship compatabilities
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT ship_model_id, species_id FROM ship_compatability";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ShipModel compatible with SpeciesID");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + "................"); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+
+            case "4": // ship models
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT id, name FROM ship_models";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ID Model Name");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+
+            case "5": // species
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT id, name, homeworld FROM species";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ID Name Homeworld");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+
+            case "6": // user
+                try {
+                    Statement st = c.createStatement();
+
+                    String query = "SELECT id, username FROM User";
+
+                    ResultSet rs = st.executeQuery(query);
+                    ResultSetMetaData rsmd = rs.getMetaData();
+
+                    int columnsNumber = rsmd.getColumnCount();
+
+
+                    // Iterate through the data in the result set and display it.
+
+                    System.out.println("ID Username");
+                    while (rs.next()) {
+                        //Print one row
+                        for (int i = 1; i <= columnsNumber; i++) {
+
+                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                        }
+
+                        System.out.println();//Move to the next line to print the next row.
+
+                    }
+
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+
+            case "7": // go back
+                superUserOptions(c);
+                break;
+            default:
+                break;
         }
 	}
 
