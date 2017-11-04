@@ -272,7 +272,7 @@ public class OurFO {
         System.out.println("3: Ship compatibility");
         System.out.println("4: Ship models");
         System.out.println("5: Species");
-        System.out.println("6: User");
+        //System.out.println("6: User");  ///   need to fix
         System.out.println("7: Go back");
 
         Scanner sc = new Scanner(System.in);
@@ -438,7 +438,7 @@ public class OurFO {
                 }
                 break;
 
-            case "6": // user
+/**            case "6": // user
                 try {
                     Statement st = c.createStatement();
 
@@ -469,7 +469,7 @@ public class OurFO {
                     System.out.println(e);
                 }
                 break;
-
+*/
             case "7": // go back
                 superUserOptions(c);
                 break;
