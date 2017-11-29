@@ -74,7 +74,7 @@ public class OurFO {
 		System.out.println("2: Display something from the database");
 		//System.out.println("3: Act as a user");
 		System.out.println("Q: Quit");
-		System.out.print("\n>>");
+		System.out.print("\n>> ");
 		
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -111,7 +111,7 @@ public class OurFO {
 		System.out.println("6: User");
 		System.out.println("Q: Go back");
 
-        System.out.print("\n>>");
+        System.out.print("\n>> ");
 
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -296,7 +296,7 @@ public class OurFO {
         //System.out.println("6: User");  ///   need to fix
         System.out.println("Q: Go back");
 
-        System.out.print("\n>>");
+        System.out.print("\n>> ");
 
         Scanner sc = new Scanner(System.in);
         String option = sc.nextLine();
@@ -321,7 +321,7 @@ public class OurFO {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -333,6 +333,7 @@ public class OurFO {
                     System.out.println(e);
                 }
 
+                break;
             case "2": // ships
                 try {
                     Statement st = c.createStatement();
