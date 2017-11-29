@@ -48,10 +48,24 @@ public class OurFO {
         }
 	 
 		OurFO ourfo = new OurFO();
-		ourfo.superUserOptions(connection);
-	}		
+        ourfo.superUserOptions(connection);
 
+        ourfo.exit(connection);        
+    }
 
+    private void exit(Connection c) {
+        try {
+            c.close();
+            System.out.println("Connection closed!");
+            System.exit(0);
+
+        } catch (SQLException e) {
+            System.out.println("Could not close connection!");
+            e.printStackTrace();
+            return;
+        }
+
+    }
 	private void superUserOptions(Connection c){
 		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser." +
 						   "In addition, there will not be constraint checking in this version. " +
@@ -59,7 +73,7 @@ public class OurFO {
 		System.out.println("1: Add something to the database");
 		System.out.println("2: Display something from the database");
 		//System.out.println("3: Act as a user");
-
+		System.out.println("Q: Quit");
 		System.out.print("\n>>");
 		
 		Scanner sc = new Scanner(System.in);
@@ -77,7 +91,11 @@ public class OurFO {
 				actAsUser(c);
 				break;
 			*/
-			default:
+            case "Q":
+                exit(c);
+				break;
+
+            default:
 				superUserOptions(c);
 				break;
 		}
@@ -91,7 +109,9 @@ public class OurFO {
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
 		System.out.println("6: User");
-		System.out.println("7: Go back");
+		System.out.println("Q: Go back");
+
+        System.out.print("\n>>");
 
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -253,10 +273,11 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "7":
+			case "Q":
 				superUserOptions(c);
 				break;
-			default:
+            default:
+                superAdd(c);
 				break;
 		}
 
@@ -273,7 +294,9 @@ public class OurFO {
         System.out.println("4: Ship models");
         System.out.println("5: Species");
         //System.out.println("6: User");  ///   need to fix
-        System.out.println("7: Go back");
+        System.out.println("Q: Go back");
+
+        System.out.print("\n>>");
 
         Scanner sc = new Scanner(System.in);
         String option = sc.nextLine();
@@ -470,12 +493,15 @@ public class OurFO {
                 }
                 break;
 */
-            case "7": // go back
+            case "Q": // go back
                 superUserOptions(c);
                 break;
             default:
+                superDisplay(c);
                 break;
         }
+
+        superDisplay(c);
 	}
 
 	/*
