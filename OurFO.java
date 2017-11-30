@@ -344,7 +344,38 @@ public class OurFO {
         }
     }
 
+    private void displayShipModels(Connection c){
+        try {
+            Statement st = c.createStatement();
 
+            String query = "SELECT id, name FROM ship_models";
+
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnsNumber = rsmd.getColumnCount();
+
+
+            // Iterate through the data in the result set and display it.
+
+            System.out.println("ID\tModel Name");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    System.out.print(rs.getString(i) + "\t"); //Print one element of a row
+
+                }
+
+                System.out.println();//Move to the next line to print the next row.
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
 	private void letsRide(Connection c){
 	    try {
             boolean flag = true;
@@ -507,35 +538,7 @@ public class OurFO {
                 break;
 
             case "4": // ship models
-                try {
-                    Statement st = c.createStatement();
-
-                    String query = "SELECT id, name FROM ship_models";
-
-                    ResultSet rs = st.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
-
-                    int columnsNumber = rsmd.getColumnCount();
-
-
-                    // Iterate through the data in the result set and display it.
-
-                    System.out.println("ID\tModel Name");
-                    while (rs.next()) {
-                        //Print one row
-                        for (int i = 1; i <= columnsNumber; i++) {
-
-                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
-
-                        }
-
-                        System.out.println();//Move to the next line to print the next row.
-
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
+                displayShipModels(c);
                 break;
 
             case "5": // species
