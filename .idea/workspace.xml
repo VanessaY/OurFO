@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4c50a75-cb64-4331-af56-66a18e2dd4d4" name="Default" comment="testing to see if sql - GUI tie worked">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/OurFo.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OurFO.class" afterPath="$PROJECT_DIR$/OurFO.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OurFO.java" afterPath="$PROJECT_DIR$/OurFO.java" />
+    <list default="true" id="a4c50a75-cb64-4331-af56-66a18e2dd4d4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OurFO.java" afterPath="$PROJECT_DIR$/OurFO.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -85,11 +81,10 @@
       <file leaf-file-name="OurFO.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OurFO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="357" column="77" lean-forward="true" selection-start-line="357" selection-start-column="77" selection-end-line="357" selection-end-column="77" />
+            <state relative-caret-position="277">
+              <caret line="364" column="42" lean-forward="false" selection-start-line="364" selection-start-column="42" selection-end-line="364" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -511,7 +506,21 @@
       <option name="project" value="LOCAL" />
       <updated>1511752527637</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets">
+      <created>1512004758683</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1512004758683</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets&#10;&#10;merged stuff">
+      <created>1512004904754</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1512004904754</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -623,7 +632,9 @@
     <MESSAGE value="first display function a success!" />
     <MESSAGE value="all displays successful except User...says 'id' column doesn't exist?" />
     <MESSAGE value="testing to see if sql - GUI tie worked" />
-    <option name="LAST_COMMIT_MESSAGE" value="testing to see if sql - GUI tie worked" />
+    <MESSAGE value="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets" />
+    <MESSAGE value="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets&#10;&#10;merged stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets&#10;&#10;merged stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -765,11 +776,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/OurFO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="357" column="77" lean-forward="true" selection-start-line="357" selection-start-column="77" selection-end-line="357" selection-end-column="77" />
+        <state relative-caret-position="277">
+          <caret line="364" column="42" lean-forward="false" selection-start-line="364" selection-start-column="42" selection-end-line="364" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
           </folding>
         </state>
       </provider>

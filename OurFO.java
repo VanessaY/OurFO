@@ -91,7 +91,7 @@ public class OurFO {
 				break;
 
             case "3":
-                getShip(c);
+                letsRide(c);
                 break;
 
 			/*
@@ -328,7 +328,7 @@ public class OurFO {
     }
 
 
-	private void getShip(Connection c){
+	private void letsRide(Connection c){
 	    try {
             boolean flag = true;
 
@@ -340,7 +340,7 @@ public class OurFO {
 
             while (flag) {
                 System.out.println("Oh no! We don't know about that planet, please add it!\nPlease select a planet ID displayed above.");
-                System.out.println();
+                System.out.print("\n>> ");
                 Scanner sc = new Scanner(System.in);
                 location = Integer.parseInt(sc.nextLine());
 
@@ -362,7 +362,7 @@ public class OurFO {
 
             while (flag) {
                 System.out.println("Where do you want to go?\nPlease select the planet ID displayed above.");
-                System.out.println();
+                System.out.print("\n>> ");
                 Scanner sc = new Scanner(System.in);
                 destination = Integer.parseInt(sc.nextLine());
 
