@@ -58,7 +58,8 @@ public class OurFO {
 						   "What would you like to do?");
 		System.out.println("1: Add something to the database");
 		System.out.println("2: Display something from the database");
-		//System.out.println("3: Act as a user");
+        System.out.println("3: Let's go on an adventure!");
+		//System.out.println("4: Act as a user");
 
 		System.out.print("\n>>");
 		
@@ -72,8 +73,13 @@ public class OurFO {
 			case "2":
 				superDisplay(c);
 				break;
+
+            case "3":
+                getShip(c);
+                break;
+
 			/*
-			case "3":
+			case "4":
 				actAsUser(c);
 				break;
 			*/
@@ -263,6 +269,108 @@ public class OurFO {
 		superAdd(c);
 
 	}
+
+	//helper function to display planets
+	private void displayPlanets(Connection c){
+        try {
+            Statement st = c.createStatement();
+
+            String query = "SELECT id, name FROM planet";
+
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnsNumber = rsmd.getColumnCount();
+
+
+            // Iterate through the data in the result set and display it.
+
+            System.out.println("ID Name");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                }
+
+                System.out.println();//Move to the next line to print the next row.
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+
+	private void getShip(Connection c){
+	    try {
+            boolean flag = true;
+
+            System.out.println("******************");
+            displayPlanets(c);
+            System.out.println("******************");
+            Integer location = -1;
+            Integer destination = -1;
+
+            while (flag) {
+                System.out.println("Oh no! We don't know about that planet, please add it!\nPlease select a planet ID displayed above.");
+                System.out.println();
+                Scanner sc = new Scanner(System.in);
+                location = Integer.parseInt(sc.nextLine());
+
+                Statement st = c.createStatement();
+                String queryCheck = "SELECT * FROM planet WHERE id = " + location;
+                ResultSet rs = st.executeQuery(queryCheck);
+
+                if (rs.next()) {
+                    //IT DOES EXIST
+                    flag = false;
+                }
+            }
+
+            flag = true;
+
+            System.out.println("******************");
+            displayPlanets(c);
+            System.out.println("******************");
+
+            while (flag) {
+                System.out.println("Where do you want to go?\nPlease select the planet ID displayed above.");
+                System.out.println();
+                Scanner sc = new Scanner(System.in);
+                destination = Integer.parseInt(sc.nextLine());
+
+                Statement st = c.createStatement();
+                String queryCheck = "SELECT * FROM planet WHERE id = " + destination;
+                ResultSet rs = st.executeQuery(queryCheck);
+
+                if(location == destination){
+                    System.out.println("You're silly! You're already there!");
+                }
+                else if (rs.next()) {
+                    //IT DOES EXIST
+                    flag = false;
+                }
+            }
+
+            //location and destination are selected. They are the planet IDs.
+
+        }
+
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+
+
+
+    }
+
+
+
+
+
 
 	private void superDisplay(Connection c){
 
