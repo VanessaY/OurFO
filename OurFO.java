@@ -137,18 +137,24 @@ public class OurFO {
                 Integer location = -1;
                 while (location <= 0){
                     System.out.print("Planet location: ");
-                    location = Integer.parseInt(sc.nextLine());
+                    try {
+                        location = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid Location");
+                        location = -1;
+                    }
                 }
+
 
 				try {
 					Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO planet (name, location) " + 
-												"VALUES (\'%s\', \'%s\')", 
-												name, location);
+					PreparedStatement stmt = c.prepareStatement("INSERT INTO planet (name, location) " + 
+                                                "VALUES (?, ?)");
+                    stmt.setString(1, name);
+                    stmt.setInt(2, location);
 					System.out.println(stmt);
 
-					PreparedStatement p = c.prepareStatement(stmt);
-					p.executeUpdate();
+					stmt.executeUpdate();
 				} catch (SQLException e){
 					System.out.println(e);
 				}
@@ -404,7 +410,7 @@ public class OurFO {
         System.out.println("3: Ship compatibility");
         System.out.println("4: Ship models");
         System.out.println("5: Species");
-        //System.out.println("6: User");  ///   need to fix
+        System.out.println("6: User");  ///   need to fix
         System.out.println("Q: Go back");
 
         System.out.print("\n>> ");
@@ -554,7 +560,7 @@ public class OurFO {
                 try {
                     Statement st = c.createStatement();
 
-                    String query = "SELECT species.name, planet.name FROM " +
+                    String query = "SELECT planet.name, species.name FROM " +
                                     "species JOIN planet ON species.homeworld = planet.id";
 
                     ResultSet rs = st.executeQuery(query);
@@ -565,7 +571,7 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("Name\tHomeworld");
+                    System.out.println("Home\tSpecies");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
