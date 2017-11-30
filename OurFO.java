@@ -447,6 +447,7 @@ public class OurFO {
                 break;
             case "2": // ships
                 try {
+
                     Statement st = c.createStatement();
 
                     String query = "SELECT ship.id, station.id, ship_models.name " +
