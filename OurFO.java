@@ -200,12 +200,14 @@ public class OurFO {
 			case "3": //ship compatibility
                 //ship_compatibility ship_id (integer)
 
+                displayShipModels(c);
                 Integer ship_model_id = -1;
                 while (ship_model_id <= 0 ){
                     System.out.print("Ship id: ");
                     ship_model_id = Integer.parseInt(sc.nextLine());
                 }
 
+                displaySpecies(c);
                 //ship_compatibility species_id (integer)
                 Integer species_id = -1;
                 while (species_id <= 0){
@@ -215,7 +217,8 @@ public class OurFO {
 
                 try {
                     Statement s = c.createStatement();
-                    String stmt = String.format("INSERT INTO ship (ship_id, species_id) VALUES (\'%d\', \'%d\')", ship_model_id, species_id);
+                    String stmt = "INSERT INTO ship_compatibility (ship_id, species_id) " +
+                                    "VALUES (?, ?)";
                     System.out.println(stmt);
 
                     PreparedStatement p = c.prepareStatement(stmt);
@@ -359,6 +362,39 @@ public class OurFO {
             // Iterate through the data in the result set and display it.
 
             System.out.println("ID\tModel Name");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    System.out.print(rs.getString(i) + "\t"); //Print one element of a row
+
+                }
+
+                System.out.println();//Move to the next line to print the next row.
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    private void displaySpecies(Connection c){
+        try {
+            Statement st = c.createStatement();
+
+            String query = "SELECT species.id, planet.name, species.name FROM " +
+                            "species JOIN planet ON species.homeworld = planet.id";
+
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnsNumber = rsmd.getColumnCount();
+
+
+            // Iterate through the data in the result set and display it.
+
+            System.out.println("ID\tHome\tSpecies");
             while (rs.next()) {
                 //Print one row
                 for (int i = 1; i <= columnsNumber; i++) {
@@ -542,36 +578,7 @@ public class OurFO {
                 break;
 
             case "5": // species
-                try {
-                    Statement st = c.createStatement();
-
-                    String query = "SELECT planet.name, species.name FROM " +
-                                    "species JOIN planet ON species.homeworld = planet.id";
-
-                    ResultSet rs = st.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
-
-                    int columnsNumber = rsmd.getColumnCount();
-
-
-                    // Iterate through the data in the result set and display it.
-
-                    System.out.println("Home\tSpecies");
-                    while (rs.next()) {
-                        //Print one row
-                        for (int i = 1; i <= columnsNumber; i++) {
-
-                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
-
-                        }
-
-                        System.out.println();//Move to the next line to print the next row.
-
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
+                displaySpecies(c);
                 break;
 
             case "6": // user
