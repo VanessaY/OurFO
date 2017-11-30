@@ -147,7 +147,6 @@ public class OurFO {
 
 
 				try {
-					Statement s = c.createStatement();
 					PreparedStatement stmt = c.prepareStatement("INSERT INTO planet (name, location) " + 
                                                 "VALUES (?, ?)");
                     stmt.setString(1, name);
@@ -165,23 +164,35 @@ public class OurFO {
                 int s_model_id = -1;
                 while (s_model_id <= 0){
                     System.out.print("Ship Model ID: ");
-                    s_model_id = Integer.parseInt(sc.nextLine());
+                    try {
+                        s_model_id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid ID");   
+                        s_model_id = -1;    
+                    }
                 }
 
                 //ship dockedat (integer)
                 Integer dockedat = -1;
                 while (dockedat <= 0){
                     System.out.print("Ship dockedat (integer): ");
-                    dockedat = Integer.parseInt(sc.nextLine());
+
+                    try {
+                        dockedat = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid ID");   
+                        dockedat = -1;    
+                    }
                 }
 
 				try {
-					Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO ship (model, dockedat) VALUES (\'%s\', \'%d\')", s_model_id, dockedat);
+                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship (model, dockedat) " + 
+                                                "VALUES (?, ?)");
+                    stmt.setInt(1, s_model_id);
+                    stmt.setInt(2, dockedat);
 					System.out.println(stmt);
 
-					PreparedStatement p = c.prepareStatement(stmt);
-					p.executeUpdate();
+					stmt.executeUpdate();
 				} catch (SQLException e){
 					System.out.println(e);
 				}
@@ -315,12 +326,12 @@ public class OurFO {
 
             // Iterate through the data in the result set and display it.
 
-            System.out.println("ID Name");
+            System.out.println("ID\tName");
             while (rs.next()) {
                 //Print one row
                 for (int i = 1; i <= columnsNumber; i++) {
 
-                    System.out.print(rs.getString(i) + " "); //Print one element of a row
+                    System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                 }
 
@@ -420,36 +431,7 @@ public class OurFO {
 
         switch(option) {
             case "1": //planet
-                try {
-                    Statement st = c.createStatement();
-
-                    String query = "SELECT id, name FROM planet";
-
-                    ResultSet rs = st.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
-
-                    int columnsNumber = rsmd.getColumnCount();
-
-
-                    // Iterate through the data in the result set and display it.
-
-                    System.out.println("ID\tName");
-                    while (rs.next()) {
-                        //Print one row
-                        for (int i = 1; i <= columnsNumber; i++) {
-
-                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
-
-                        }
-
-                        System.out.println();//Move to the next line to print the next row.
-
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
-
+                displayPlanets(c);
                 break;
             case "2": // ships
                 try {
