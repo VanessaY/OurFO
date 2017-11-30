@@ -553,14 +553,23 @@ public class OurFO {
             System.out.println("******************\n");
             System.out.println("Above are the ships available at your location!");
 
-//            flag = true;
+            flag = true;
+
+            while (flag) {
+                System.out.println("Which ship do you want?");
+                System.out.print("\n>> ");
+                Scanner sc = new Scanner(System.in);
+                String ship_model = sc.nextLine();
+
+//                Statement st = c.createStatement();
+//                String queryCheck =  "CAN YOU FIGURE THIS SHIT OUT?"; //TODO CHECK IF THE SHIP MODEL (ship_model) IS DOCKED AT THE LOCATION (location)
+//                ResultSet rs = st.executeQuery(queryCheck);
 //
-//            while (flag) {
-//                System.out.println("Which ship do you want?");
-//                System.out.print("\n>> ");
-//                Scanner sc = new Scanner(System.in);
-//                Integer location_station = Integer.parseInt(sc.nextLine());
-//            }
+//                if (rs.next()) {
+//                    //IT DOES EXIST
+//                    flag = false;
+//                }
+            }
 
         }
 
