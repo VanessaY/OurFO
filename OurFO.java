@@ -48,10 +48,23 @@ public class OurFO {
         }
 	 
 		OurFO ourfo = new OurFO();
-		ourfo.superUserOptions(connection);
-	}		
+        ourfo.superUserOptions(connection);
 
+        ourfo.exit(connection);
+    }
 
+    private void exit(Connection c) {
+        try {
+            c.close();
+            System.out.println("Connection closed!");
+            System.exit(0);
+        } catch (SQLException e) {
+            System.out.println("Could not close connection!");
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+    }
 	private void superUserOptions(Connection c){
 		System.out.println("\nConnection succeeded! This is a prototype, so you are a superuser." +
 						   "In addition, there will not be constraint checking in this version. " +
@@ -62,7 +75,10 @@ public class OurFO {
 		//System.out.println("4: Act as a user");
 
 		System.out.print("\n>>");
-		
+		//System.out.println("3: Act as a user");
+		System.out.println("Q: Quit");
+		System.out.print("\n>> ");
+
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
 
@@ -83,21 +99,27 @@ public class OurFO {
 				actAsUser(c);
 				break;
 			*/
-			default:
+            case "Q":
+                exit(c);
+				break;
+
+            default:
 				superUserOptions(c);
 				break;
 		}
 	}
 
 	private void superAdd(Connection c){
-		System.out.println("What would you like to add?");
+		System.out.println("\nWhat would you like to add?");
 		System.out.println("1: Planet");
 		System.out.println("2: Ship");
 		System.out.println("3: Ship compatibility");
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
 		System.out.println("6: User");
-		System.out.println("7: Go back");
+		System.out.println("Q: Go back");
+
+        System.out.print("\n>> ");
 
 		Scanner sc = new Scanner(System.in);
 		String option = sc.nextLine();
@@ -160,6 +182,7 @@ public class OurFO {
 				break;
 			case "3": //ship compatibility
                 //ship_compatibility ship_id (integer)
+
                 Integer ship_model_id = -1;
                 while (ship_model_id <= 0 ){
                     System.out.print("Ship id: ");
@@ -259,10 +282,11 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "7":
+			case "Q":
 				superUserOptions(c);
 				break;
-			default:
+            default:
+                superAdd(c);
 				break;
 		}
 
@@ -374,14 +398,16 @@ public class OurFO {
 
 	private void superDisplay(Connection c){
 
-        System.out.println("What would you like to display?");
+        System.out.println("\nWhat would you like to display?");
         System.out.println("1: Planet");
         System.out.println("2: Ship");
         System.out.println("3: Ship compatibility");
         System.out.println("4: Ship models");
         System.out.println("5: Species");
         //System.out.println("6: User");  ///   need to fix
-        System.out.println("7: Go back");
+        System.out.println("Q: Go back");
+
+        System.out.print("\n>> ");
 
         Scanner sc = new Scanner(System.in);
         String option = sc.nextLine();
@@ -401,12 +427,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ID Name");
+                    System.out.println("ID\tName");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -418,11 +444,15 @@ public class OurFO {
                     System.out.println(e);
                 }
 
+                break;
             case "2": // ships
                 try {
                     Statement st = c.createStatement();
 
-                    String query = "SELECT id, model FROM ship";
+                    String query = "SELECT ship.id, station.id, ship_models.name " +
+                                    "FROM ship JOIN ship_models ON " +
+                                    "ship.model = ship_models.id " +
+                                    "JOIN station ON ship.dockedAt = station.id ";
 
                     ResultSet rs = st.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
@@ -432,12 +462,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ID Model-ID");
+                    System.out.println("ID\tStation\tShip Model");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -454,7 +484,12 @@ public class OurFO {
                 try {
                     Statement st = c.createStatement();
 
-                    String query = "SELECT ship_model_id, species_id FROM ship_compatability";
+                    //String query = "SELECT ship_model_id, species_id FROM ship_compatability";
+                    String query = "SELECT ship_models.name, species.name FROM "+
+                                    "ship_compatibility JOIN species ON " +
+                                    "ship_compatibility.species_id = species.id " +
+                                    "JOIN ship_models ON " +
+                                    "ship_compatibility.ship_model_id = ship_models.id";
 
                     ResultSet rs = st.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
@@ -464,12 +499,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ShipModel compatible with SpeciesID");
+                    System.out.println("Model\tSpecies");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + "................"); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -496,12 +531,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ID Model Name");
+                    System.out.println("ID\tModel Name");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -518,7 +553,8 @@ public class OurFO {
                 try {
                     Statement st = c.createStatement();
 
-                    String query = "SELECT id, name, homeworld FROM species";
+                    String query = "SELECT species.name, planet.name FROM " +
+                                    "species JOIN planet ON species.homeworld = planet.id";
 
                     ResultSet rs = st.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
@@ -528,12 +564,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ID Name Homeworld");
+                    System.out.println("Name\tHomeworld");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -578,12 +614,15 @@ public class OurFO {
                 }
                 break;
 */
-            case "7": // go back
+            case "Q": // go back
                 superUserOptions(c);
                 break;
             default:
+                superDisplay(c);
                 break;
         }
+
+        superDisplay(c);
 	}
 
 	/*
