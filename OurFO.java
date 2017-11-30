@@ -583,11 +583,11 @@ public class OurFO {
                 }
                 break;
 
-/**            case "6": // user
+            case "6": // user
                 try {
                     Statement st = c.createStatement();
 
-                    String query = "SELECT id, username FROM User";
+                    String query = "SELECT id, username FROM \"User\"";
 
                     ResultSet rs = st.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
@@ -597,12 +597,12 @@ public class OurFO {
 
                     // Iterate through the data in the result set and display it.
 
-                    System.out.println("ID Username");
+                    System.out.println("ID\tUsername");
                     while (rs.next()) {
                         //Print one row
                         for (int i = 1; i <= columnsNumber; i++) {
 
-                            System.out.print(rs.getString(i) + " "); //Print one element of a row
+                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                         }
 
@@ -614,7 +614,7 @@ public class OurFO {
                     System.out.println(e);
                 }
                 break;
-*/
+
             case "Q": // go back
                 superUserOptions(c);
                 break;
