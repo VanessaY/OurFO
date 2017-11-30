@@ -163,6 +163,7 @@ public class OurFO {
 				//ship model (int)
                 int s_model_id = -1;
                 while (s_model_id <= 0){
+                    displayShipModels(c);
                     System.out.print("Ship Model ID: ");
                     try {
                         s_model_id = Integer.parseInt(sc.nextLine());
@@ -175,6 +176,7 @@ public class OurFO {
                 //ship dockedat (integer)
                 Integer dockedat = -1;
                 while (dockedat <= 0){
+                    displayStations(c);
                     System.out.print("Ship dockedat (integer): ");
 
                     try {
@@ -200,29 +202,39 @@ public class OurFO {
 			case "3": //ship compatibility
                 //ship_compatibility ship_id (integer)
 
-                displayShipModels(c);
                 Integer ship_model_id = -1;
                 while (ship_model_id <= 0 ){
-                    System.out.print("Ship id: ");
-                    ship_model_id = Integer.parseInt(sc.nextLine());
+                    displayShipModels(c);
+                    System.out.print("Ship model id: ");
+                    try {
+                        ship_model_id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid Ship Model ID");
+                        ship_model_id = -1;
+                    }
                 }
 
-                displaySpecies(c);
                 //ship_compatibility species_id (integer)
                 Integer species_id = -1;
                 while (species_id <= 0){
+                    displaySpecies(c);
                     System.out.print("Species id: ");
-                    species_id = Integer.parseInt(sc.nextLine());
+                    try {
+                        species_id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid Species ID");
+                        species_id = -1;
+                    }
                 }
 
                 try {
-                    Statement s = c.createStatement();
-                    String stmt = "INSERT INTO ship_compatibility (ship_id, species_id) " +
-                                    "VALUES (?, ?)";
+                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship_compatibility (ship_model_id, species_id) " +
+                                    "VALUES (?, ?)");
+                    stmt.setInt(1, ship_model_id);
+                    stmt.setInt(2, species_id);
                     System.out.println(stmt);
 
-                    PreparedStatement p = c.prepareStatement(stmt);
-                    p.executeUpdate();
+                    stmt.executeUpdate();
                 } catch (SQLException e){
                     System.out.println(e);
                 }
@@ -236,12 +248,11 @@ public class OurFO {
                 }
 
                 try {
-                    Statement s = c.createStatement();
-                    String stmt = String.format("INSERT INTO ship_models (name) VALUES (\'%s\', \'%d\')", sm_name);
+                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship_models (name) VALUES (?)");
+                    stmt.setString(1, sm_name);
                     System.out.println(stmt);
-
-                    PreparedStatement p = c.prepareStatement(stmt);
-                    p.executeUpdate();
+                    
+                    stmt.execute();
                 } catch (SQLException e){
                     System.out.println(e);
                 }
@@ -255,21 +266,26 @@ public class OurFO {
                 }
 
 				//Species homeworld (varchar(20))
-				String world = "";
-				while (world.equals("")){
-					System.out.println("Species homeworld: ");
-					world = sc.nextLine();
+				int world = -1;
+				while (world <= 0){
+                    displayPlanets(c);
+					System.out.println("Species homeworld ID: ");
+					try {
+                        world = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid homeworld ID");
+                        world = -1;
+                    }
 				}
 
                 try {
-                    Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO species (name, homeworld) " + 
-												"VALUES (\'%s\', \'%s\')", 
-												s_name, world);
+					PreparedStatement stmt = c.prepareStatement("INSERT INTO species (name, homeworld) " + 
+												"VALUES (?, ?)");
+                    stmt.setString(1, s_name);
+                    stmt.setInt(2, world);
                     System.out.println(stmt);
 
-                    PreparedStatement p = c.prepareStatement(stmt);
-                    p.executeUpdate();
+                    stmt.executeUpdate();
                 } catch (SQLException e){
                     System.out.println(e);
                 }
@@ -278,26 +294,30 @@ public class OurFO {
 			    //username (varchar(20))
                 String u_name = "";
                 while (u_name.equals("")){
-                    System.out.print("Ship Model name: ");
-                    name = sc.nextLine();
+                    System.out.print("Username: ");
+                    u_name = sc.nextLine();
                 }
 
 				//Species_id (int)
 				int u_id = -1;
 				while (u_id <= 0){
-					System.out.print("Ship Model ID: ");
-					u_id = Integer.parseInt(sc.nextLine());
+                    displaySpecies(c);
+                    System.out.print("Species ID: ");
+                    try {
+                        u_id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid species ID");
+                        u_id = -1;
+                    }
 				}
 
                 try {
-                    Statement s = c.createStatement();
-					String stmt = String.format("INSERT INTO ship_models (name, species_id) " + 
-												"VALUES (\'%s\', \'%d\')", 
-												u_name, u_id);
+					PreparedStatement stmt = c.prepareStatement("INSERT INTO \"User\" (username, species_id) " + 
+                                                "VALUES (?,?)");
+                    stmt.setString(1, u_name);
+                    stmt.setInt(2, u_id);
                     System.out.println(stmt);
-
-                    PreparedStatement p = c.prepareStatement(stmt);
-                    p.executeUpdate();
+                    stmt.executeUpdate();
                 } catch (SQLException e){
                     System.out.println(e);
                 }
@@ -411,7 +431,39 @@ public class OurFO {
             System.out.println(e);
         }
     }
-    
+
+    private void displayStations(Connection c){
+        try {
+            Statement st = c.createStatement();
+
+              String query = "SELECT station.id, planet.name FROM station JOIN planet " +
+                              "ON station.planet_id = planet.id";
+          
+              ResultSet rs = st.executeQuery(query);
+              ResultSetMetaData rsmd = rs.getMetaData();
+
+              int columnsNumber = rsmd.getColumnCount();
+
+
+              // Iterate through the data in the result set and display it.
+
+              System.out.println("ID\tPlanet");
+              while (rs.next()) {
+                  //Print one row
+                  for (int i = 1; i <= columnsNumber; i++) {
+
+                      System.out.print(rs.getString(i) + "\t"); //Print one element of a row
+
+                  }
+
+                  System.out.println();//Move to the next line to print the next row.
+
+              }
+
+          } catch (SQLException e) {
+              System.out.println(e);
+          }
+    }
 	private void letsRide(Connection c){
 	    try {
             boolean flag = true;
@@ -488,7 +540,8 @@ public class OurFO {
         System.out.println("3: Ship compatibility");
         System.out.println("4: Ship models");
         System.out.println("5: Species");
-        System.out.println("6: User");  ///   need to fix
+        System.out.println("6: User");
+        System.out.println("7: Stations");
         System.out.println("Q: Go back");
 
         System.out.print("\n>> ");
@@ -612,7 +665,10 @@ public class OurFO {
                     System.out.println(e);
                 }
                 break;
-
+            
+            case "7": //Stations
+                displayStations(c);
+                break;
             case "Q": // go back
                 superUserOptions(c);
                 break;
