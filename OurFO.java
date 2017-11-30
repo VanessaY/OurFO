@@ -411,6 +411,7 @@ public class OurFO {
             System.out.println(e);
         }
     }
+
     private void displayShipModels(Connection c){
         try {
             Statement st = c.createStatement();
@@ -534,7 +535,7 @@ public class OurFO {
 
                 System.out.print("\n>> ");
                 Scanner sc = new Scanner(System.in);
-                Integer location_station = Integer.parseInt(sc.nextLine());
+                Integer destination_station = Integer.parseInt(sc.nextLine());
 
                 Statement st = c.createStatement();
                 String queryCheck = "SELECT * FROM station WHERE id = " + destination_station + " AND planet_id = " + destination;
@@ -551,6 +552,15 @@ public class OurFO {
             displayShipsAtPlanet(c, location);
             System.out.println("******************\n");
             System.out.println("Above are the ships available at your location!");
+
+//            flag = true;
+//
+//            while (flag) {
+//                System.out.println("Which ship do you want?");
+//                System.out.print("\n>> ");
+//                Scanner sc = new Scanner(System.in);
+//                Integer location_station = Integer.parseInt(sc.nextLine());
+//            }
 
         }
 

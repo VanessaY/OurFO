@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4c50a75-cb64-4331-af56-66a18e2dd4d4" name="Default" comment="added being able to pick stations after picking location/destination">
+    <list default="true" id="a4c50a75-cb64-4331-af56-66a18e2dd4d4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OurFO.class" afterPath="$PROJECT_DIR$/OurFO.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OurFO.java" afterPath="$PROJECT_DIR$/OurFO.java" />
     </list>
@@ -105,10 +106,13 @@
       <file leaf-file-name="OurFO.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OurFO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="548" column="13" lean-forward="true" selection-start-line="548" selection-start-column="13" selection-end-line="548" selection-end-column="13" />
+            <state relative-caret-position="65">
+              <caret line="498" column="0" lean-forward="true" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
+                <element signature="method#displayShipsAtPlanet#0;class#OurFO#0" expanded="false" />
+                <element signature="method#displayStationsAtPlanet#0;class#OurFO#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -656,7 +660,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512004904754</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added being able to pick stations after picking location/destination">
+      <created>1512008707105</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1512008707105</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -911,10 +922,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/OurFO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="548" column="13" lean-forward="true" selection-start-line="548" selection-start-column="13" selection-end-line="548" selection-end-column="13" />
+        <state relative-caret-position="65">
+          <caret line="498" column="0" lean-forward="true" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
+            <element signature="method#displayShipsAtPlanet#0;class#OurFO#0" expanded="false" />
+            <element signature="method#displayStationsAtPlanet#0;class#OurFO#0" expanded="false" />
           </folding>
         </state>
       </provider>
