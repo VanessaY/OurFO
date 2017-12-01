@@ -6,11 +6,13 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Scanner;
+import java.util.*;
 
 public class OurFO {
 
 	public static void main(String[] argv) {
 
+	    //connect to postgresql driver
         try{
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
@@ -19,6 +21,7 @@ public class OurFO {
 			return;
 		}
 
+		//username and password
         Scanner sc = new Scanner(System.in);
         System.out.print("Postgres Username: ");
 		String username = sc.nextLine();
@@ -31,7 +34,10 @@ public class OurFO {
         if (password.equals("")){
 			password = "changeTHISplease";
 		}
+
 		Connection connection= null;
+
+        //connect to database
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:postgresql://reddwarf.cs.rit.edu:5432/p32003a", username,
@@ -50,6 +56,8 @@ public class OurFO {
 		OurFO ourfo = new OurFO();
         ourfo.superUserOptions(connection);
 
+        System.out.println("\nThank you very much for using oUrFO!\n\n");
+        printGoodbye();
         ourfo.exit(connection);
     }
 
@@ -75,7 +83,7 @@ public class OurFO {
 		//System.out.println("4: Act as a user");
 
 		System.out.print("\n>>");
-		//System.out.println("3: Act as a user");
+		//System.out.println("4: Act as a user");
 		System.out.println("Q: Quit");
 		System.out.print("\n>> ");
 
@@ -435,6 +443,7 @@ public class OurFO {
         }
     }
 
+    //helper function to print all the ship models
     private void displayShipModels(Connection c){
         try {
             Statement st = c.createStatement();
@@ -657,7 +666,19 @@ public class OurFO {
 //                    //IT DOES EXIST
 //                    flag = false;
 //                }
+                flag = false;
             }
+
+            //variables we have at this point
+            //location
+            //location_station
+            //destination
+            //destination_station
+            //ship_model
+
+            //TIME TO TRAVEL
+            letsTravelllllll();
+
 
         }
 
@@ -668,7 +689,6 @@ public class OurFO {
 
 
     }
-
 
 
 
@@ -825,5 +845,92 @@ public class OurFO {
 	private void actAsUser(Connection c){
 	}
 	*/
+
+
+    private void letsTravelllllll()
+    {
+        ProgressBar bar = new ProgressBar();
+
+        System.out.println("LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!");
+
+        bar.update(0, 1000);
+        for(int i=0;i<1000;i++) {
+
+            for(int j=0;j<1000000;j++)
+                for(int p=0;p<1000000;p++);
+
+            bar.update(i, 1000);
+        }
+        System.out.println("OMG WE ARE HERE!");
+    }
+
+    private static void printGoodbye()
+    {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        lines.add("             .-\"\"\"\"-.        .-\"\"\"\"-.        .-\"\"\"\"-.");
+        lines.add("            /        \\      /        \\      /        \\");
+        lines.add("           /_        _\\    /_        _\\    /_        _\\");
+        lines.add("          // \\      / \\\\  // \\      / \\\\  // \\      / \\\\");
+        lines.add("          |\\__\\    /__/|  |\\__\\    /__/|  |\\__\\    /__/|");
+        lines.add("           \\    ||    /    \\    ||    /    \\    ||    /");
+        lines.add("            \\        /      \\        /      \\        /");
+        lines.add("             \\  __  /        \\  __  /        \\  __  /");
+        lines.add("              '.__.'          '.__.'          '.__.'");
+        lines.add("               |  |            |  |            |  |");
+        lines.add("               |  |            |  |            |  |");
+        lines.add("               |  |            |  |            |  |");
+        lines.add("              Abraham         Lillian         Vanessa");
+        lines.add("");
+        lines.add("*********************** TOTALLY NOT ALIENS ***********************");
+
+        try
+        {
+            for (int i = 0; i < lines.size(); i++) {
+                System.out.println(lines.get(i));
+                Thread.sleep(250);
+            }
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
 
+/**
+ * Ascii progress meter. On completion this will reset itself,
+ * so it can be reused
+ * <br /><br />
+ * 100% ################################################## |
+ */
+class ProgressBar {
+    private StringBuilder progress;
+    public ProgressBar() {
+        init();
+    }
+    public void update(int done, int total) {
+        char[] workchars = {'|', '/', '-', '\\'};
+        String format = "\r%3d%% %s %c";
+
+        int percent = (++done * 100) / total;
+        int extrachars = (percent / 2) - this.progress.length();
+
+        while (extrachars-- > 0) {
+            progress.append('#');
+        }
+
+        System.out.printf(format, percent, progress,
+                workchars[done % workchars.length]);
+
+        if (done == total) {
+            System.out.flush();
+            System.out.println();
+            init();
+        }
+    }
+
+    private void init() {
+        this.progress = new StringBuilder(60);
+    }
+}
