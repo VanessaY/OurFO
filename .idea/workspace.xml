@@ -106,11 +106,18 @@
       <file leaf-file-name="OurFO.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OurFO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="564" column="152" lean-forward="false" selection-start-line="564" selection-start-column="152" selection-end-line="564" selection-end-column="152" />
+            <state relative-caret-position="1726">
+              <caret line="828" column="31" lean-forward="false" selection-start-line="828" selection-start-column="31" selection-end-line="828" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
+                <element signature="method#displayShipsAtPlanet#0;class#OurFO#0" expanded="false" />
+                <element signature="method#displayStationsAtPlanet#0;class#OurFO#0" expanded="false" />
+                <element signature="method#displayShipModels#0;class#OurFO#0" expanded="false" />
+                <element signature="e#26837#26838#0" expanded="true" />
+                <element signature="e#26859#26860#0" expanded="true" />
+                <element signature="e#27454#27455#0" expanded="true" />
+                <element signature="e#27507#27508#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -202,6 +209,7 @@
         <option value="$PROJECT_DIR$/appSrc/ReviewController.java" />
         <option value="$PROJECT_DIR$/appSrc/SignInController.java" />
         <option value="$PROJECT_DIR$/appSrc/Main.java" />
+        <option value="$PROJECT_DIR$/appSrc/ProgressBar.java" />
         <option value="$PROJECT_DIR$/OurFO.java" />
       </list>
     </option>
@@ -5180,7 +5188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512009067889</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added checking of valid ship to take, need help with SQL statement for that">
+      <created>1512009612794</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1512009612794</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -5296,11 +5311,12 @@
     <MESSAGE value="added functionality for selecting a location and destination&#10;&#10;added helper function to display planets&#10;&#10;merged stuff" />
     <MESSAGE value="added being able to pick stations after picking location/destination" />
     <MESSAGE value="fixed bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug" />
+    <MESSAGE value="added checking of valid ship to take, need help with SQL statement for that" />
+    <option name="LAST_COMMIT_MESSAGE" value="added checking of valid ship to take, need help with SQL statement for that" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -5309,7 +5325,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../OurFOApp/src/Location_DestinationController.java" />
     <entry file="file://$PROJECT_DIR$/../OurFOApp/src/ReviewController.java" />
     <entry file="file://$PROJECT_DIR$/OurFO.class">
       <provider selected="true" editor-type-id="text-editor">
@@ -5434,17 +5449,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OurFO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="564" column="152" lean-forward="false" selection-start-line="564" selection-start-column="152" selection-end-line="564" selection-end-column="152" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/94f5d7bf-b5af-4a7e-a116-6b1ae429fc33/console.sql" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/56aacf60-e64a-4e07-aabc-3a967563e67f/console.sql" />
     <entry file="das://table:/32fc9b94/56aacf60-e64a-4e07-aabc-3a967563e67f/p32003a.public.planet" />
@@ -5452,6 +5456,32 @@
     <entry file="das://table:/32fc9b94/56aacf60-e64a-4e07-aabc-3a967563e67f/p32003a.public.ship_models" />
     <entry file="das://table:/32fc9b94/56aacf60-e64a-4e07-aabc-3a967563e67f/p32003a.public.station" />
     <entry file="das://table:/32fc9b94/56aacf60-e64a-4e07-aabc-3a967563e67f/p32003a.public.ship" />
+    <entry file="file://$PROJECT_DIR$/appSrc/ProgressBar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="496">
+          <caret line="34" column="46" lean-forward="true" selection-start-line="34" selection-start-column="46" selection-end-line="34" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OurFO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1726">
+          <caret line="828" column="31" lean-forward="false" selection-start-line="828" selection-start-column="31" selection-end-line="828" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#displayPlanets#0;class#OurFO#0" expanded="false" />
+            <element signature="method#displayShipsAtPlanet#0;class#OurFO#0" expanded="false" />
+            <element signature="method#displayStationsAtPlanet#0;class#OurFO#0" expanded="false" />
+            <element signature="method#displayShipModels#0;class#OurFO#0" expanded="false" />
+            <element signature="e#26837#26838#0" expanded="true" />
+            <element signature="e#26859#26860#0" expanded="true" />
+            <element signature="e#27454#27455#0" expanded="true" />
+            <element signature="e#27507#27508#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>
