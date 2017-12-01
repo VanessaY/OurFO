@@ -147,7 +147,7 @@ public class OurFO {
 
 
 				try {
-					PreparedStatement stmt = c.prepareStatement("INSERT INTO planet (name, location) " + 
+					PreparedStatement stmt = c.prepareStatement("INSERT INTO planet (name, location) " +
                                                 "VALUES (?, ?)");
                     stmt.setString(1, name);
                     stmt.setInt(2, location);
@@ -168,8 +168,8 @@ public class OurFO {
                     try {
                         s_model_id = Integer.parseInt(sc.nextLine());
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid ID");   
-                        s_model_id = -1;    
+                        System.out.println("Invalid ID");
+                        s_model_id = -1;
                     }
                 }
 
@@ -182,13 +182,13 @@ public class OurFO {
                     try {
                         dockedat = Integer.parseInt(sc.nextLine());
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid ID");   
-                        dockedat = -1;    
+                        System.out.println("Invalid ID");
+                        dockedat = -1;
                     }
                 }
 
 				try {
-                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship (model, dockedat) " + 
+                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship (model, dockedat) " +
                                                 "VALUES (?, ?)");
                     stmt.setInt(1, s_model_id);
                     stmt.setInt(2, dockedat);
@@ -367,6 +367,74 @@ public class OurFO {
         }
     }
 
+    //helper function to print ships dockedAt a planet
+    private void displayShipsAtPlanet(Connection c, Integer planet_id){
+        try {
+            Statement st = c.createStatement();
+
+            String query =  "SELECT ship_models.name FROM " +
+                    "ship JOIN ship_models ON ship.dockedAt = ship_models.id " +
+                    "WHERE ship.dockedAt = " + planet_id;
+
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnsNumber = rsmd.getColumnCount();
+
+
+            // Iterate through the data in the result set and display it.
+
+            System.out.println("Ship Model");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    System.out.print(rs.getString(i)); //Print one element of a row
+
+                }
+
+                System.out.println();//Move to the next line to print the next row.
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    //helper function to print stations that belong to a planet
+    private void displayStationsAtPlanet(Connection c, Integer planet_id){
+        try {
+            Statement st = c.createStatement();
+
+            String query = "SELECT id FROM station WHERE planet_id = " + planet_id;
+
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnsNumber = rsmd.getColumnCount();
+
+
+            // Iterate through the data in the result set and display it.
+
+            System.out.println("Station ID");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
+
+                    System.out.print(rs.getString(i) + " "); //Print one element of a row
+
+                }
+
+                System.out.println();//Move to the next line to print the next row.
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     private void displayShipModels(Connection c){
         try {
             Statement st = c.createStatement();
@@ -475,7 +543,7 @@ public class OurFO {
             Integer destination = -1;
 
             while (flag) {
-                System.out.println("Oh no! We don't know about that planet, please add it!\nPlease select a planet ID displayed above.");
+                System.out.println("Where are you?\nPlease select a planet ID displayed above.");
                 System.out.print("\n>> ");
                 Scanner sc = new Scanner(System.in);
                 location = Integer.parseInt(sc.nextLine());
@@ -488,7 +556,37 @@ public class OurFO {
                     //IT DOES EXIST
                     flag = false;
                 }
+                else{
+                    System.out.println("That planet doesn't exist...\n");
+                }
             }
+
+            flag = true;
+
+            System.out.println("******************");
+            displayStationsAtPlanet(c, location);
+            System.out.println("******************");
+
+            while(flag) {
+                System.out.println("Which station from your location do you want to leave from?");
+
+                System.out.print("\n>> ");
+                Scanner sc = new Scanner(System.in);
+                Integer location_station = Integer.parseInt(sc.nextLine());
+
+                Statement st = c.createStatement();
+                String queryCheck = "SELECT * FROM station WHERE id = " + location_station + " AND planet_id = " + location;
+                ResultSet rs = st.executeQuery(queryCheck);
+
+                if (rs.next()) {
+                    //IT DOES EXIST
+                    flag = false;
+                }
+            }
+
+
+
+
 
             flag = true;
 
@@ -515,7 +613,51 @@ public class OurFO {
                 }
             }
 
+            flag = true;
+
+            System.out.println("******************");
+            displayStationsAtPlanet(c, destination);
+            System.out.println("******************");
+            while(flag) {
+                System.out.println("Which station from your destination do you want to leave from?");
+
+                System.out.print("\n>> ");
+                Scanner sc = new Scanner(System.in);
+                Integer destination_station = Integer.parseInt(sc.nextLine());
+
+                Statement st = c.createStatement();
+                String queryCheck = "SELECT * FROM station WHERE id = " + destination_station + " AND planet_id = " + destination;
+                ResultSet rs = st.executeQuery(queryCheck);
+
+                if (rs.next()) {
+                    //IT DOES EXIST
+                    flag = false;
+                }
+            }
+
             //location and destination are selected. They are the planet IDs.
+            System.out.println("******************");
+            displayShipsAtPlanet(c, location);
+            System.out.println("******************\n");
+            System.out.println("Above are the ships available at your location!");
+
+            flag = true;
+
+            while (flag) {
+                System.out.println("Which ship do you want?");
+                System.out.print("\n>> ");
+                Scanner sc = new Scanner(System.in);
+                String ship_model = sc.nextLine();
+
+//                Statement st = c.createStatement();
+//                String queryCheck =  "CAN YOU FIGURE THIS SHIT OUT?"; //TODO CHECK IF THE SHIP MODEL (ship_model) IS DOCKED AT THE LOCATION (location)
+//                ResultSet rs = st.executeQuery(queryCheck);
+//
+//                if (rs.next()) {
+//                    //IT DOES EXIST
+//                    flag = false;
+//                }
+            }
 
         }
 
@@ -526,7 +668,6 @@ public class OurFO {
 
 
     }
-
 
 
 
