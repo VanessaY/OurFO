@@ -78,8 +78,7 @@ public class OurFO {
 
 	private void superUserOptions(Connection c){
 
-        displayShipsAtStation(c, 2);
-        
+
 		System.out.println("\nConnection succeeded! You are a superuser. " +
 						   "What would you like to do?");
 		System.out.println("1: Add something to the database");
@@ -424,13 +423,13 @@ public class OurFO {
             Statement st = c.createStatement();
 
             String query =  "SELECT ship.id, " + 
-                                   "ship_models.name, " +
-                                   "AVG(ship_review.rating) " + 
+                                   "ship_models.name " +
+                                   //"AVG(ship_review.rating) " + 
                             "FROM ship "+
                                   "JOIN ship_models ON ship.model = ship_models.id " +
-                                  "JOIN ship_review ON ship_review.written_for = ship.id " +
-                            "WHERE ship.dockedAt = " + station_id +
-                            "GROUP BY ship_models.name, ship.id"; 
+                                  //"JOIN ship_review ON ship_review.written_for = ship.id " +
+                            "WHERE ship.dockedAt = " + station_id;  
+                            //"GROUP BY ship_models.name, ship.id"; 
 
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -440,15 +439,15 @@ public class OurFO {
 
             // Iterate through the data in the result set and display it.
 
-            System.out.println("ID\tModel\tRating");
+            System.out.println("ID\tModel");
             while (rs.next()) {
                 //Print one row
-                for (int i = 1; i <= columnsNumber-1; i++) {
+                for (int i = 1; i <= columnsNumber; i++) {
 
                     System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
                 }
-                System.out.printf("%.2f",rs.getFloat(columnsNumber));
+                //System.out.printf("%.2f",rs.getFloat(columnsNumber));
 
                 System.out.println();//Move to the next line to print the next row.
 
@@ -763,7 +762,7 @@ public class OurFO {
 
                 while (destination_station <= 0){
                     displayStationsAtPlanet(c, destination);
-                    System.out.println("Which station from your destination do you want to leave from?");
+                    System.out.println("Which station from your destination do you want to go to?");
 
                     System.out.print("\n>> ");
                     sc = new Scanner(System.in);
@@ -803,7 +802,7 @@ public class OurFO {
                 ship = -1;
 
                 while (ship <= 0){
-                    displayShipsAtStation(c, destination_station);
+                    displayShipsAtStation(c, location_station);
                     System.out.println("Above are the ships available at your location!");
                 
                     System.out.println("Which ship do you want?");
@@ -819,7 +818,7 @@ public class OurFO {
 
                     PreparedStatement stmt = c.prepareStatement("SELECT * FROM ship WHERE ship.id = ? AND ship.dockedAt = ?");
                     stmt.setInt(1, ship);
-                    stmt.setInt(2, destination_station);
+                    stmt.setInt(2, location_station);
                     ResultSet rs = stmt.executeQuery();
 
                     if (rs.next()){
@@ -833,11 +832,9 @@ public class OurFO {
             }
 
 
-            /*
             //Undock
-            PreparedStatement stmt = c.prepareStatement("UPDATE ship SET dockedAt = ? WHERE ship.id = ?");
-            stmt.setNull(1, Types.INTEGER);
-            stmt.setInt(2, ship);
+            PreparedStatement stmt = c.prepareStatement("UPDATE ship SET dockedAt = null WHERE ship.id = ?");
+            stmt.setInt(1, ship);
             stmt.executeUpdate();
 
             letsTravelllllll();
@@ -847,7 +844,6 @@ public class OurFO {
             stmt.setInt(1, destination_station);
             stmt.setInt(2, ship);
             stmt.executeUpdate();
-            */
         }
 
         catch (SQLException e) {
