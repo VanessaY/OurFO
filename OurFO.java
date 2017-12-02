@@ -57,13 +57,13 @@ public class OurFO {
         ourfo.superUserOptions(connection);
 
         System.out.println("\nThank you very much for using oUrFO!\n\n");
-        printGoodbye();
         ourfo.exit(connection);
     }
 
     private void exit(Connection c) {
         try {
             c.close();
+            printGoodbye();
             System.out.println("Connection closed!");
             System.exit(0);
         } catch (SQLException e) {
@@ -124,7 +124,8 @@ public class OurFO {
 		System.out.println("3: Ship compatibility");
 		System.out.println("4: Ship models");
 		System.out.println("5: Species");
-		System.out.println("6: User");
+        System.out.println("6: User");
+        System.out.println("7: Station");
 		System.out.println("Q: Go back");
 
         System.out.print("\n>> ");
@@ -330,7 +331,48 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "Q":
+            
+            case "7":
+                //Planet id
+                int planet_id = -1;
+                while (planet_id <= 0){
+                    displayPlanets(c);
+                    System.out.println("Planet ID: ");
+                    try {
+                        planet_id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid Planet ID");
+                        planet_id = -1;
+                    }
+                }
+
+                //location on planet
+                location = -1;
+                while (location <= 0){
+                    System.out.println("Location on planet: ");
+                    try {
+                        location = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid Location");
+                        planet_id = -1;
+                    }
+                }
+
+                try {
+					PreparedStatement stmt = c.prepareStatement("INSERT INTO station (location, planet_id) " + 
+                                                "VALUES (?,?)");
+                    stmt.setInt(1, location);
+                    stmt.setInt(2, planet_id);
+                    System.out.println(stmt);
+                    stmt.executeUpdate();
+                } catch (SQLException e){
+                    System.out.println(e);
+                }
+
+                break;    
+
+            case "Q":
+            case "q":
 				superUserOptions(c);
 				break;
             default:
@@ -541,72 +583,91 @@ public class OurFO {
               System.out.println(e);
           }
     }
+
 	private void letsRide(Connection c){
 	    try {
             boolean flag = true;
 
-            System.out.println("******************");
-            displayPlanets(c);
-            System.out.println("******************");
             Integer location = -1;
             Integer destination = -1;
+            
+            Scanner sc = new Scanner(System.in);
 
             while (flag) {
-                System.out.println("Where are you?\nPlease select a planet ID displayed above.");
-                System.out.print("\n>> ");
-                Scanner sc = new Scanner(System.in);
-                location = Integer.parseInt(sc.nextLine());
+                ResultSet rs = null;
 
-                Statement st = c.createStatement();
-                String queryCheck = "SELECT * FROM planet WHERE id = " + location;
-                ResultSet rs = st.executeQuery(queryCheck);
+                while (location <= 0){
+                    displayPlanets(c);
+                    System.out.println("Where are you?\nPlease select a planet ID that is displayed above.");
+                    System.out.print("\n>> ");
+                
+                    try {
+                        location = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid location");
+                        location = -1;
+                    }
 
-                if (rs.next()) {
+                    PreparedStatement stmt = c.prepareStatement("SELECT * FROM planet WHERE id = ?");
+                    stmt.setInt(1, location);
+
+                    rs = stmt.executeQuery();
+
+                    if (rs.next()) {
                     //IT DOES EXIST
-                    flag = false;
+                        flag = false;
+                    }
+                    else {
+                        System.out.println("That planet doesn't exist...    \n");
+                        rs = null;
+                        location = -1;
+                    }
+
                 }
-                else{
-                    System.out.println("That planet doesn't exist...\n");
-                }
+
             }
 
             flag = true;
-
-            System.out.println("******************");
-            displayStationsAtPlanet(c, location);
-            System.out.println("******************");
 
             while(flag) {
-                System.out.println("Which station from your location do you want to leave from?");
+                displayStationsAtPlanet(c, location);
 
-                System.out.print("\n>> ");
-                Scanner sc = new Scanner(System.in);
-                Integer location_station = Integer.parseInt(sc.nextLine());
+                Integer location_station = -1;
+                
+                while (location_station <= 0){
+                    System.out.println("Which station from your location do you want to leave from?");
+                    System.out.print("\n>> ");
 
-                Statement st = c.createStatement();
-                String queryCheck = "SELECT * FROM station WHERE id = " + location_station + " AND planet_id = " + location;
-                ResultSet rs = st.executeQuery(queryCheck);
+                    try {
+                        location_station = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid location");
+                        location_station = -1;
+                    }
 
-                if (rs.next()) {
-                    //IT DOES EXIST
-                    flag = false;
+                    PreparedStatement stmt = c.prepareStatement("SELECT * FROM station WHERE id = ? AND planet_id = ?");
+                    ResultSet rs = stmt.executeQuery();
+
+                    if (rs.next()) {
+                        //IT DOES EXIST
+                        flag = false;
+                    } 
+                    else {
+                        System.out.println("That station doesn't exist...\n");
+                        rs = null;
+                    }
                 }
+
             }
-
-
-
-
 
             flag = true;
 
-            System.out.println("******************");
             displayPlanets(c);
-            System.out.println("******************");
 
             while (flag) {
                 System.out.println("Where do you want to go?\nPlease select the planet ID displayed above.");
                 System.out.print("\n>> ");
-                Scanner sc = new Scanner(System.in);
+                sc = new Scanner(System.in);
                 destination = Integer.parseInt(sc.nextLine());
 
                 Statement st = c.createStatement();
@@ -614,24 +675,23 @@ public class OurFO {
                 ResultSet rs = st.executeQuery(queryCheck);
 
                 if(location == destination){
-                    System.out.println("You're silly! You're already there!");
+                    System.out.println("You're silly! You're already here!");
                 }
                 else if (rs.next()) {
                     //IT DOES EXIST
                     flag = false;
                 }
+
             }
 
             flag = true;
 
-            System.out.println("******************");
             displayStationsAtPlanet(c, destination);
-            System.out.println("******************");
             while(flag) {
                 System.out.println("Which station from your destination do you want to leave from?");
 
                 System.out.print("\n>> ");
-                Scanner sc = new Scanner(System.in);
+                sc = new Scanner(System.in);
                 Integer destination_station = Integer.parseInt(sc.nextLine());
 
                 Statement st = c.createStatement();
@@ -642,6 +702,7 @@ public class OurFO {
                     //IT DOES EXIST
                     flag = false;
                 }
+
             }
 
             //location and destination are selected. They are the planet IDs.
@@ -655,7 +716,7 @@ public class OurFO {
             while (flag) {
                 System.out.println("Which ship do you want?");
                 System.out.print("\n>> ");
-                Scanner sc = new Scanner(System.in);
+                sc = new Scanner(System.in);
                 String ship_model = sc.nextLine();
 
 //                Statement st = c.createStatement();
@@ -667,6 +728,7 @@ public class OurFO {
 //                    flag = false;
 //                }
                 flag = false;
+
             }
 
             //variables we have at this point
@@ -685,8 +747,6 @@ public class OurFO {
         catch (SQLException e) {
             System.out.println(e);
         }
-
-
 
     }
 
