@@ -56,13 +56,13 @@ public class OurFO {
 		OurFO ourfo = new OurFO();
         ourfo.superUserOptions(connection);
 
-        System.out.println("\nThank you very much for using oUrFO!\n\n");
         ourfo.exit(connection);
     }
 
     private void exit(Connection c) {
         try {
             c.close();
+            System.out.println("\nThank very much for using oUrFO!\n\n");
             printGoodbye();
             System.out.println("Connection closed!");
             System.exit(0);
@@ -555,33 +555,51 @@ public class OurFO {
         try {
             Statement st = c.createStatement();
 
-              String query = "SELECT station.id, planet.name FROM station JOIN planet " +
-                              "ON station.planet_id = planet.id";
-          
-              ResultSet rs = st.executeQuery(query);
-              ResultSetMetaData rsmd = rs.getMetaData();
+            String query = "SELECT station.id, planet.name FROM station JOIN planet " +
+                            "ON station.planet_id = planet.id";
+        
+            ResultSet rs = st.executeQuery(query);
+            ResultSetMetaData rsmd = rs.getMetaData();
 
-              int columnsNumber = rsmd.getColumnCount();
+            int columnsNumber = rsmd.getColumnCount();
 
+            // Iterate through the data in the result set and display it.
 
-              // Iterate through the data in the result set and display it.
+            System.out.println("ID\tPlanet");
+            while (rs.next()) {
+                //Print one row
+                for (int i = 1; i <= columnsNumber; i++) {
 
-              System.out.println("ID\tPlanet");
-              while (rs.next()) {
-                  //Print one row
-                  for (int i = 1; i <= columnsNumber; i++) {
+                    System.out.print(rs.getString(i) + "\t"); //Print one element of a row
 
-                      System.out.print(rs.getString(i) + "\t"); //Print one element of a row
+                }
 
-                  }
+                System.out.println();//Move to the next line to print the next row.
 
-                  System.out.println();//Move to the next line to print the next row.
-
-              }
+            }
 
           } catch (SQLException e) {
               System.out.println(e);
           }
+    }
+
+    private int numStationsOnPlanet(Connection c, int planet_id){
+        try {
+            Statement st = c.createStatement();
+            String query = "SELECT COUNT(*) FROM station WHERE planet_id = " + planet_id;
+
+            ResultSet rs = st.executeQuery(query);
+            
+            int count = 0;
+            while (rs.next()){
+                count = rs.getInt(1);
+            }
+            return count;
+        } catch (SQLException e){
+            System.out.println(e);
+        }
+
+        return -1;
     }
 
 	private void letsRide(Connection c){
@@ -630,11 +648,17 @@ public class OurFO {
             flag = true;
 
             while(flag) {
-                displayStationsAtPlanet(c, location);
 
                 Integer location_station = -1;
                 
+                if (numStationsOnPlanet(c, location) < 1) {
+                    System.out.println("Sorry, there aren't any stations on that planet! Let's try again.");
+                    letsRide(c);
+                    return;
+                }
+
                 while (location_station <= 0){
+                    displayStationsAtPlanet(c, location);
                     System.out.println("Which station from your location do you want to leave from?");
                     System.out.print("\n>> ");
 
@@ -646,6 +670,8 @@ public class OurFO {
                     }
 
                     PreparedStatement stmt = c.prepareStatement("SELECT * FROM station WHERE id = ? AND planet_id = ?");
+                    stmt.setInt(1, location_station);
+                    stmt.setInt(2, location);
                     ResultSet rs = stmt.executeQuery();
 
                     if (rs.next()) {
@@ -661,54 +687,82 @@ public class OurFO {
             }
 
             flag = true;
-
-            displayPlanets(c);
+            sc = new Scanner(System.in);
 
             while (flag) {
-                System.out.println("Where do you want to go?\nPlease select the planet ID displayed above.");
-                System.out.print("\n>> ");
-                sc = new Scanner(System.in);
-                destination = Integer.parseInt(sc.nextLine());
+                ResultSet rs = null;
+                while (destination <= 0){
+                    displayPlanets(c);
+                    System.out.println("Where do you want to go?\nPlease select the planet ID displayed above.");
+                    System.out.print("\n>> ");
+                
+                    try {
+                        destination = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid location");
+                        destination = -1;
+                    }
 
-                Statement st = c.createStatement();
-                String queryCheck = "SELECT * FROM planet WHERE id = " + destination;
-                ResultSet rs = st.executeQuery(queryCheck);
+                    PreparedStatement stmt = c.prepareStatement("SELECT * FROM planet WHERE id = ?");
+                    stmt.setInt(1, destination);
+                    rs = stmt.executeQuery();
 
-                if(location == destination){
-                    System.out.println("You're silly! You're already here!");
+                    if(location == destination){
+                        System.out.println("You're silly! You're already here!");
+                    }
+                    else if (rs.next()) {
+                        //IT DOES EXIST
+                        flag = false;
+                    } else {
+                        System.out.println("That planet doesn't exist...\n");
+                        rs = null;
+                        destination = -1;      
+                    }
                 }
-                else if (rs.next()) {
-                    //IT DOES EXIST
-                    flag = false;
-                }
-
             }
 
             flag = true;
 
-            displayStationsAtPlanet(c, destination);
             while(flag) {
-                System.out.println("Which station from your destination do you want to leave from?");
+                if (numStationsOnPlanet(c, destination) < 1){
+                    System.out.println("Sorry, there aren't any stations on that planet! Let's try again.");
+                    letsRide(c);
+                    return;
+                }
 
-                System.out.print("\n>> ");
-                sc = new Scanner(System.in);
-                Integer destination_station = Integer.parseInt(sc.nextLine());
+                Integer destination_station = -1;
 
-                Statement st = c.createStatement();
-                String queryCheck = "SELECT * FROM station WHERE id = " + destination_station + " AND planet_id = " + destination;
-                ResultSet rs = st.executeQuery(queryCheck);
+                while (destination_station <= 0){
+                    displayStationsAtPlanet(c, destination);
+                    System.out.println("Which station from your destination do you want to leave from?");
+
+                    System.out.print("\n>> ");
+                    sc = new Scanner(System.in);
+
+                    try {
+                        destination_station = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e){
+                        System.out.println("Invalid location");
+                    }
+                }
+            
+                PreparedStatement stmt = c.prepareStatement("SELECT * FROM station WHERE id = ? AND planet_id = ?");
+                stmt.setInt(1, destination_station);
+                stmt.setInt(2, destination);
+                ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
                     //IT DOES EXIST
                     flag = false;
+                } else {
+                    System.out.println("That station doesn't exist...\n");
+                    rs = null;
                 }
 
             }
 
             //location and destination are selected. They are the planet IDs.
-            System.out.println("******************");
             displayShipsAtPlanet(c, location);
-            System.out.println("******************\n");
             System.out.println("Above are the ships available at your location!");
 
             flag = true;
@@ -748,6 +802,7 @@ public class OurFO {
             System.out.println(e);
         }
 
+        superUserOptions(c);
     }
 
 
@@ -901,11 +956,6 @@ public class OurFO {
         superDisplay(c);
 	}
 
-	/*
-	private void actAsUser(Connection c){
-	}
-	*/
-
 
     private void letsTravelllllll()
     {
@@ -921,7 +971,7 @@ public class OurFO {
 
             bar.update(i, 1000);
         }
-        System.out.println("OMG WE ARE HERE!");
+        System.out.println("We're here!");
     }
 
     private static void printGoodbye()
@@ -951,7 +1001,7 @@ public class OurFO {
                 Thread.sleep(250);
             }
         }
-        catch(InterruptedException ex)
+                catch(InterruptedException ex)
         {
             Thread.currentThread().interrupt();
         }
