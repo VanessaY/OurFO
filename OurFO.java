@@ -121,11 +121,10 @@ public class OurFO {
 		System.out.println("\nWhat would you like to add?");
 		System.out.println("1: Planet");
 		System.out.println("2: Ship");
-		System.out.println("3: Ship compatibility");
-		System.out.println("4: Ship models");
-		System.out.println("5: Species");
-        System.out.println("6: User");
-        System.out.println("7: Station");
+		System.out.println("3: Ship models");
+		System.out.println("4: Species");
+        System.out.println("5: User");
+        System.out.println("6: Station");
 		System.out.println("Q: Go back");
 
         System.out.print("\n>> ");
@@ -208,47 +207,8 @@ public class OurFO {
 					System.out.println(e);
 				}
 				break;
-			case "3": //ship compatibility
-                //ship_compatibility ship_id (integer)
-
-                Integer ship_model_id = -1;
-                while (ship_model_id <= 0 ){
-                    displayShipModels(c);
-                    System.out.print("Ship model id: ");
-                    try {
-                        ship_model_id = Integer.parseInt(sc.nextLine());
-                    } catch (NumberFormatException e){
-                        System.out.println("Invalid Ship Model ID");
-                        ship_model_id = -1;
-                    }
-                }
-
-                //ship_compatibility species_id (integer)
-                Integer species_id = -1;
-                while (species_id <= 0){
-                    displaySpecies(c);
-                    System.out.print("Species id: ");
-                    try {
-                        species_id = Integer.parseInt(sc.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid Species ID");
-                        species_id = -1;
-                    }
-                }
-
-                try {
-                    PreparedStatement stmt = c.prepareStatement("INSERT INTO ship_compatibility (ship_model_id, species_id) " +
-                                    "VALUES (?, ?)");
-                    stmt.setInt(1, ship_model_id);
-                    stmt.setInt(2, species_id);
-                    System.out.println(stmt);
-
-                    stmt.executeUpdate();
-                } catch (SQLException e){
-                    System.out.println(e);
-                }
-				break;
-			case "4": //ship model
+			
+			case "3": //ship model
                 //ship_models name (varchar(20))
                 String sm_name = "";
                 while (sm_name.equals("")){
@@ -266,7 +226,7 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "5": //Species
+			case "4": //Species
 			    //species name (varchar(20))
                 String s_name = "";
                 while (s_name.equals("")){
@@ -299,7 +259,7 @@ public class OurFO {
                     System.out.println(e);
                 }
 				break;
-			case "6": //User
+			case "5": //User
 			    //username (varchar(20))
                 String u_name = "";
                 while (u_name.equals("")){
@@ -332,7 +292,7 @@ public class OurFO {
                 }
 				break;
             
-            case "7":
+            case "6":
                 //Planet id
                 int planet_id = -1;
                 while (planet_id <= 0){
@@ -861,11 +821,10 @@ public class OurFO {
         System.out.println("\nWhat would you like to display?");
         System.out.println("1: Planet");
         System.out.println("2: Ship");
-        System.out.println("3: Ship compatibility");
-        System.out.println("4: Ship models");
-        System.out.println("5: Species");
-        System.out.println("6: User");
-        System.out.println("7: Stations");
+        System.out.println("3: Ship models");
+        System.out.println("4: Species");
+        System.out.println("5: User");
+        System.out.println("6: Stations");
         System.out.println("Q: Go back");
 
         System.out.print("\n>> ");
@@ -913,52 +872,16 @@ public class OurFO {
                 }
                 break;
 
-            case "3" : // ship compatabilities
-                try {
-                    Statement st = c.createStatement();
 
-                    //String query = "SELECT ship_model_id, species_id FROM ship_compatability";
-                    String query = "SELECT ship_models.name, species.name FROM "+
-                                    "ship_compatibility JOIN species ON " +
-                                    "ship_compatibility.species_id = species.id " +
-                                    "JOIN ship_models ON " +
-                                    "ship_compatibility.ship_model_id = ship_models.id";
-
-                    ResultSet rs = st.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
-
-                    int columnsNumber = rsmd.getColumnCount();
-
-
-                    // Iterate through the data in the result set and display it.
-
-                    System.out.println("Model\tSpecies");
-                    while (rs.next()) {
-                        //Print one row
-                        for (int i = 1; i <= columnsNumber; i++) {
-
-                            System.out.print(rs.getString(i) + "\t"); //Print one element of a row
-
-                        }
-
-                        System.out.println();//Move to the next line to print the next row.
-
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
-                break;
-
-            case "4": // ship models
+            case "3": // ship models
                 displayShipModels(c);
                 break;
 
-            case "5": // species
+            case "4": // species
                 displaySpecies(c);
                 break;
 
-            case "6": // user
+            case "5": // user
                 try {
                     Statement st = c.createStatement();
 
@@ -990,7 +913,7 @@ public class OurFO {
                 }
                 break;
             
-            case "7": //Stations
+            case "6": //Stations
                 displayStations(c);
                 break;
             case "Q": // go back
